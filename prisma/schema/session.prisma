@@ -1,8 +1,15 @@
 model Session {
-  id        String   @id
-  userId    String
-  expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String    @id @default(cuid())
+  userId       String
+  ipAddress    String? // Dirección IP del usuario.
+  userAgent    String? // Información del navegador o dispositivo.
+  location     String? // Ubicación geográfica aproximada, opcional.
+  lastActivity DateTime // Última vez que se utilizó esta sesión.
+  isActive     Boolean   @default(true) // Estado de la sesión.
+  createdAt    DateTime  @default(now()) // Cuándo se creó la sesión.
+  expiresAt    DateTime // Cuándo expira la sesión.
+  terminatedAt DateTime? // Registro de cuándo se desactivó.
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
